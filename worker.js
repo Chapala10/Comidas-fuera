@@ -22,7 +22,7 @@
 /* Si el plan gratis rechaza este modelo, prueba con "gemini-3.5-flash"
    o "gemini-3.5-flash-lite", que son los más ligeros. */
 const MODELO_POR_DEFECTO = "gemini-3.6-flash";
-const MAX_TOKENS = 4096;
+const MAX_TOKENS = 8192;
 
 function cors(env, extra) {
   const origen = (env && env.ORIGEN_PERMITIDO) || "*";
