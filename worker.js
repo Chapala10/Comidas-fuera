@@ -21,7 +21,7 @@
 
 /* Si el plan gratis rechaza este modelo, prueba con "gemini-3.5-flash"
    o "gemini-3.5-flash-lite", que son los más ligeros. */
-const MODELO_POR_DEFECTO = "gemini-3.6-flash";
+const MODELO_POR_DEFECTO = "gemini-3.5-flash";
 const MAX_TOKENS = 8192;
 
 function cors(env, extra) {
@@ -80,7 +80,7 @@ export async function manejar(request, env) {
   const url = "https://generativelanguage.googleapis.com/v1beta/models/" +
               encodeURIComponent(modelo) + ":generateContent";
 
-  let respuesta;
+   let respuesta;
   try {
     respuesta = await fetch(url, {
       method: "POST",
@@ -93,7 +93,6 @@ export async function manejar(request, env) {
         generationConfig: {
           temperature: 0.2,
           maxOutputTokens: MAX_TOKENS,
-          // Gemini devuelve JSON puro, sin ```json alrededor.
           responseMimeType: "application/json",
           thinkingConfig: { thinkingBudget: 0 }
         }
