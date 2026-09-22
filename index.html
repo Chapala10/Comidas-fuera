@@ -1,0 +1,1705 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Plato Justo</title>
+<meta name="description" content="Fotografía el menú del restaurante y te dice qué pedir según tus porciones.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Plato Justo">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<meta name="theme-color" content="#F6F5F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101216" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter+Tight:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme:light dark;
+  --paper:#F6F5F2;
+  --surface:#FFFEFB;
+  --ink:#14161A;
+  --ink-2:rgba(20,22,26,.78);
+  --ink-3:rgba(20,22,26,.62);
+  --line:rgba(20,22,26,.13);
+  --line-i:rgba(20,22,26,.34);
+  --cobalt:#1F47E6;
+  --cobalt-ink:#1F47E6;
+  --cobalt-fill:#1F47E6;
+  --on-cobalt:#FFFFFF;
+  --cobalt-soft:rgba(31,71,230,.08);
+  --skel:rgba(20,22,26,.08);
+  --r:14px;
+  --pill:999px;
+  --display:'Bricolage Grotesque','Inter Tight','Helvetica Neue',Arial,sans-serif;
+  --ui:'Inter Tight','Helvetica Neue',Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#101216;
+    --surface:#171A1F;
+    --ink:#F3F3F1;
+    --ink-2:rgba(243,243,241,.78);
+    --ink-3:rgba(243,243,241,.62);
+    --line:rgba(243,243,241,.15);
+    --line-i:rgba(243,243,241,.34);
+    --cobalt:#8FA7FF;
+    --cobalt-ink:#8FA7FF;
+    --cobalt-fill:#3358F0;
+    --on-cobalt:#FFFFFF;
+    --cobalt-soft:rgba(143,167,255,.13);
+    --skel:rgba(243,243,241,.10);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#101216;
+  --surface:#171A1F;
+  --ink:#F3F3F1;
+  --ink-2:rgba(243,243,241,.78);
+  --ink-3:rgba(243,243,241,.62);
+  --line:rgba(243,243,241,.15);
+  --line-i:rgba(243,243,241,.34);
+  --cobalt:#8FA7FF;
+  --cobalt-ink:#8FA7FF;
+  --cobalt-fill:#3358F0;
+  --on-cobalt:#FFFFFF;
+  --cobalt-soft:rgba(143,167,255,.13);
+  --skel:rgba(243,243,241,.10);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+html{
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  background:var(--paper);
+}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--ui);font-size:16px;line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+}
+img{max-width:100%}
+[hidden]{display:none!important}
+.app{
+  width:100%;max-width:460px;margin:0 auto;min-height:100%;
+  padding-inline:20px;padding-block:14px 26px;
+  display:flex;flex-direction:column;
+}
+.screen{display:flex;flex-direction:column;flex:1 1 auto;min-height:0}
+.grow{flex:1 1 auto}
+:focus-visible{outline:2px solid var(--cobalt);outline-offset:3px;border-radius:4px}
+[tabindex="-1"]:focus{outline:none}
+
+h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h1{font-size:30px;line-height:1.1}
+h2{font-size:23px;line-height:1.15}
+h3{font-size:16px;font-weight:600;letter-spacing:-.01em}
+p{margin:0}
+.lead{font-size:14.5px;color:var(--ink-3);line-height:1.45}
+.tiny{font-size:12.5px;color:var(--ink-3);line-height:1.4}
+.kick{font-family:var(--ui);font-size:11px;font-weight:600;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--ink-3)}
+.num{font-variant-numeric:tabular-nums}
+
+.bar{display:flex;align-items:center;justify-content:space-between;gap:8px;
+     min-height:44px;margin-bottom:10px}
+.iconbtn{
+  width:44px;height:44px;margin-inline:-11px;border:0;background:transparent;color:var(--ink-3);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:var(--pill);
+}
+.iconbtn svg{width:21px;height:21px}
+.avatar{
+  width:44px;height:44px;margin-inline:0 -5px;border:1px solid var(--line-i);background:var(--surface);
+  color:var(--ink);border-radius:var(--pill);display:flex;align-items:center;justify-content:center;cursor:pointer;
+}
+.avatar svg{width:20px;height:20px}
+.bar .where{font-size:13.5px;color:var(--ink-3);font-weight:500}
+
+.clock{text-align:center;padding-block:26px 0}
+.clock .t{font-family:var(--display);font-weight:800;font-size:60px;line-height:.95;
+          letter-spacing:-.045em;font-variant-numeric:tabular-nums}
+.clock .d{font-size:13.5px;color:var(--ink-3);margin-top:8px}
+.ask{text-align:center;margin-block:34px 18px}
+
+.opt{
+  width:100%;display:flex;align-items:center;justify-content:center;position:relative;
+  min-height:56px;padding:14px 16px;margin-bottom:9px;
+  border:1px solid var(--line-i);border-radius:var(--r);background:var(--surface);
+  color:var(--ink);font-family:var(--ui);font-size:16px;font-weight:500;cursor:pointer;
+  text-align:center;transition:border-color .12s,background .12s;
+}
+.opt:active{transform:scale(.99)}
+.opt.now{border-color:var(--cobalt);background:var(--cobalt-soft);color:var(--cobalt-ink);font-weight:600}
+.opt .hint{position:absolute;right:14px;font-size:10.5px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--cobalt-ink)}
+.btn{
+  width:100%;min-height:54px;display:flex;align-items:center;justify-content:center;gap:9px;
+  border:1px solid transparent;border-radius:var(--r);cursor:pointer;
+  font-family:var(--ui);font-size:16px;font-weight:600;letter-spacing:-.005em;
+  background:var(--cobalt-fill);color:var(--on-cobalt);
+  transition:opacity .12s,transform .08s;
+}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-i)}
+.btn.quiet{background:transparent;color:var(--cobalt-ink);border-color:transparent;
+  min-height:46px;font-weight:500;font-size:14.5px}
+.stack{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;padding:4px 10px;border-radius:var(--pill);border:1px solid var(--line);
+      color:var(--ink-3);font-variant-numeric:tabular-nums}
+.v{font-size:12px;padding:4px 11px;border-radius:var(--pill);font-weight:600;flex:none}
+.v.encaja{background:var(--cobalt-fill);color:var(--on-cobalt)}
+.v.ajustable{border:1px solid var(--cobalt);color:var(--cobalt-ink)}
+.v.pasa{border:1px solid var(--line-i);color:var(--ink-3)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px}
+.note{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line-i);
+      border-radius:var(--r);padding:12px 13px;background:var(--surface)}
+.note svg{width:17px;height:17px;flex:none;margin-top:1px;color:var(--cobalt-ink)}
+.note p{font-size:13.5px;line-height:1.4;color:var(--ink)}
+
+ul.mods{list-style:none;padding:0;margin:0}
+ul.mods li{font-size:14.5px;line-height:1.4;padding:11px 0 11px 18px;position:relative;
+           border-bottom:1px solid var(--line)}
+ul.mods li:last-child{border-bottom:0}
+ul.mods li::before{content:"";position:absolute;left:0;top:18px;width:6px;height:6px;
+                   border-radius:var(--pill);background:var(--cobalt)}
+
+.rows{display:flex;flex-direction:column}
+.row{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:14px 0;border:0;border-bottom:1px solid var(--line);background:transparent;
+  color:var(--ink);font-family:var(--ui);font-size:16px;text-align:left;cursor:pointer;
+}
+.row:last-child{border-bottom:0}
+.row .t{font-size:15.5px;font-weight:500;line-height:1.25}
+.row .s{font-size:12.5px;color:var(--ink-3);margin-top:3px}
+.row .chev{color:var(--ink-3);flex:none}
+.row .chev svg{width:16px;height:16px;display:block}
+.row.static{cursor:default}
+
+.grp{margin-bottom:15px}
+.grp .lbl{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;margin-bottom:6px}
+.grp .lbl b{font-weight:500}
+.grp .lbl span{color:var(--ink-3);font-variant-numeric:tabular-nums;font-size:12.5px}
+.bar2{height:4px;background:var(--skel);border-radius:var(--pill);position:relative}
+.bar2 i{position:absolute;left:0;top:0;bottom:0;background:var(--cobalt);border-radius:var(--pill)}
+.bar2 u{position:absolute;top:-4px;bottom:-4px;width:1.5px;background:var(--ink);opacity:.55}
+
+.dayhdr{display:flex;justify-content:space-between;align-items:baseline;
+        padding:18px 0 6px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.hmeta{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;margin-bottom:2px}
+.macros{font-size:12.5px;color:var(--ink-3);font-variant-numeric:tabular-nums;margin-top:4px}
+.badge{width:28px;height:28px;border-radius:var(--pill);border:1px solid var(--cobalt);
+       color:var(--cobalt-ink);display:flex;align-items:center;justify-content:center;flex:none}
+.badge svg{width:14px;height:14px}
+.lib{font-size:11px;padding:4px 9px;border-radius:var(--pill);border:1px solid var(--line-i);
+     color:var(--ink-3);flex:none}
+
+.check{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  min-height:52px;padding:13px 14px;margin-bottom:9px;text-align:left;cursor:pointer;
+  border:1px solid var(--line);border-radius:var(--r);background:var(--surface);
+  color:var(--ink);font-family:var(--ui);font-size:14.5px;line-height:1.3;
+}
+.check .box{width:22px;height:22px;border-radius:7px;border:1.5px solid var(--line-i);flex:none;
+            display:flex;align-items:center;justify-content:center}
+.check .box svg{width:13px;height:13px;opacity:0}
+.check[aria-pressed="true"] .box{background:var(--cobalt-fill);border-color:var(--cobalt-fill)}
+.check[aria-pressed="true"] .box svg{opacity:1;color:var(--on-cobalt)}
+.check[aria-pressed="false"]{color:var(--ink-3)}
+
+.free{border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:12px;background:var(--surface)}
+.dots{display:flex;gap:7px;margin:9px 0 7px}
+.dots i{width:11px;height:11px;border-radius:var(--pill);background:var(--cobalt);display:block}
+.dots i.off{background:transparent;border:1px solid var(--line-i)}
+
+.drop{
+  width:100%;border:1.5px dashed var(--line-i);border-radius:var(--r);padding:30px 18px;
+  text-align:center;background:var(--cobalt-soft);cursor:pointer;color:var(--ink);
+  font-family:var(--ui);font-size:15px;
+}
+.drop svg{width:28px;height:28px;color:var(--cobalt-ink);margin-bottom:10px}
+.shot{
+  width:84px;height:84px;border-radius:var(--pill);border:3px solid var(--on-cobalt);
+  background:var(--cobalt-fill);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;margin:0 auto;box-shadow:0 0 0 1px var(--line-i);
+}
+.shot svg{width:32px;height:32px;color:var(--on-cobalt)}
+.prev{width:100%;border-radius:var(--r);border:1px solid var(--line);display:block;margin-bottom:14px}
+
+.sk{background:var(--skel);border-radius:8px;height:13px}
+.skcard{border:1px solid var(--line);border-radius:var(--r);padding:16px;display:grid;gap:10px;margin-bottom:11px}
+.prog{height:3px;background:var(--skel);border-radius:var(--pill);overflow:hidden;margin-bottom:22px}
+.prog i{display:block;height:100%;width:30%;background:var(--cobalt);border-radius:var(--pill);
+        animation:slide 1.6s ease-in-out infinite}
+@keyframes slide{0%{margin-left:-30%}100%{margin-left:100%}}
+@media (prefers-reduced-motion: reduce){
+  .prog i{animation:none;width:100%;opacity:.5}
+  *{transition-duration:.01ms!important}
+}
+
+label.fl{display:block;font-size:12.5px;color:var(--ink-3);margin-bottom:7px}
+textarea,input[type=text],input[type=password],input[type=url]{
+  width:100%;font-family:var(--ui);font-size:16px;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line-i);border-radius:var(--r);padding:13px;line-height:1.4;
+}
+textarea{min-height:96px;resize:vertical}
+::placeholder{color:var(--ink-3);opacity:1}
+
+.err{border:1px solid var(--line-i);border-radius:var(--r);padding:13px;font-size:14px;color:var(--ink);background:var(--surface)}
+.center{text-align:center}
+.ok-mark{width:52px;height:52px;border-radius:var(--pill);background:var(--cobalt-soft);
+         display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.ok-mark svg{width:26px;height:26px;color:var(--cobalt-ink)}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<!-- 01 inicio -->
+<section class="screen" id="s-inicio">
+  <div class="bar">
+    <span></span>
+    <button class="avatar" id="go-cuenta" aria-label="Tu cuenta">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.8-3.7 3.7-5.6 7.2-5.6s6.4 1.9 7.2 5.6"/></svg>
+    </button>
+  </div>
+  <div class="clock">
+    <p class="t num" id="reloj">--:--</p>
+    <p class="d" id="fecha"></p>
+  </div>
+  <h1 class="ask">¿En qué comida estás?</h1>
+  <div id="opciones"></div>
+  <div class="grow"></div>
+  <p class="tiny center">Damos por hechas las comidas y las colaciones anteriores del día.</p>
+</section>
+
+<!-- 02 captura -->
+<section class="screen" id="s-captura" hidden>
+  <div class="bar">
+    <button class="iconbtn" data-back aria-label="Regresar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <span class="where" id="cap-meal"></span>
+    <span style="width:22px"></span>
+  </div>
+  <div class="grow" style="display:flex;flex-direction:column;justify-content:center;gap:18px">
+    <div class="center">
+      <h2>Toma la foto<br>del menú</h2>
+      <p class="lead" style="margin-top:10px">Encuadra la sección de platos fuertes. Si el menú es largo, fotografía solo esa parte.</p>
+    </div>
+    <img class="prev" id="cap-prev" alt="Foto del menú que tomaste" hidden>
+    <div id="cap-msg"></div>
+  </div>
+  <div class="center" style="margin-bottom:8px">
+    <button class="shot" id="disparar" aria-label="Tomar foto del menú">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L8 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+    </button>
+  </div>
+  <input id="file-menu" type="file" accept="image/*" capture="environment" hidden>
+  <div class="stack">
+    <button class="btn" id="analizar" hidden>Analizar este menú</button>
+    <button class="btn quiet" id="go-escribir">Mejor escribo el platillo</button>
+  </div>
+</section>
+
+<!-- 03 leyendo -->
+<section class="screen" id="s-leyendo" hidden>
+  <div class="bar">
+    <button class="iconbtn" id="cancelar" aria-label="Cancelar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <h2>Leyendo el menú</h2>
+  <p class="lead" style="margin:8px 0 20px" id="leyendo-msg">Tarda unos segundos.</p>
+  <div class="prog"><i></i></div>
+  <div class="skcard"><div class="sk" style="width:40%"></div><div class="sk"></div><div class="sk" style="width:72%"></div></div>
+  <div class="skcard"><div class="sk" style="width:64%"></div><div class="sk" style="width:38%"></div></div>
+  <div class="skcard"><div class="sk" style="width:58%"></div><div class="sk" style="width:44%"></div></div>
+</section>
+
+<!-- 04 resultado -->
+<section class="screen" id="s-resultado" hidden>
+  <div class="bar">
+    <button class="iconbtn" data-back aria-label="Regresar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <span class="where" id="res-meal"></span>
+    <span style="width:22px"></span>
+  </div>
+  <div id="res-body"></div>
+  <div class="grow"></div>
+  <div class="stack">
+    <button class="btn" id="pedi-esto">Ya lo pedí</button>
+    <button class="btn quiet" id="ver-menu"></button>
+  </div>
+</section>
+
+<!-- 05 menú -->
+<section class="screen" id="s-menu" hidden>
+  <div class="bar">
+    <button class="iconbtn" data-back aria-label="Regresar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  </div>
+  <h2>El menú, de mejor<br>a peor para hoy</h2>
+  <p class="lead" id="menu-sub" style="margin:8px 0 14px"></p>
+  <div class="rows" id="menu-rows"></div>
+</section>
+
+<!-- 06 detalle -->
+<section class="screen" id="s-detalle" hidden>
+  <div class="bar">
+    <button class="iconbtn" data-back aria-label="Regresar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  </div>
+  <div id="det-body"></div>
+  <div class="grow"></div>
+  <div class="stack">
+    <button class="btn" id="pedi-detalle">Ya lo pedí</button>
+  </div>
+</section>
+
+<!-- 07 confirmar -->
+<section class="screen" id="s-confirmar" hidden>
+  <div class="bar">
+    <button class="iconbtn" data-back aria-label="Regresar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  </div>
+  <h2 id="conf-titulo">¿Salió como lo pediste?</h2>
+  <p class="lead" style="margin:8px 0 18px">Quita lo que no se pudo.</p>
+  <div id="conf-checks"></div>
+  <div class="grow"></div>
+  <div id="conf-aviso" style="margin-bottom:12px" aria-live="polite"></div>
+  <button class="btn" id="registrar">Registrar</button>
+</section>
+
+<!-- 08 listo -->
+<section class="screen" id="s-listo" hidden>
+  <div class="bar"><span></span></div>
+  <div class="grow" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="ok-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <h1 id="listo-titulo">Comida registrada</h1>
+    <p class="lead" style="margin:10px 0 18px" id="listo-sub"></p>
+    <div id="listo-aviso"></div>
+  </div>
+  <div class="stack">
+    <button class="btn ghost" id="listo-inicio">Volver al inicio</button>
+    <button class="btn quiet" id="listo-historial">Ver mis comidas fuera</button>
+  </div>
+</section>
+
+<!-- 09 comida libre -->
+<section class="screen" id="s-libre" hidden>
+  <div class="bar">
+    <button class="iconbtn" data-back aria-label="Regresar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  </div>
+  <h2>Nada de este menú<br>se te acomoda</h2>
+  <p class="lead" style="margin:10px 0 18px" id="libre-sub"></p>
+  <div id="libre-menos"></div>
+  <div class="grow"></div>
+  <div class="free" id="libre-cuenta"></div>
+  <button class="btn" id="registrar-libre">Registrar comida libre</button>
+  <button class="btn quiet" id="libre-ver">Ver el menú de todos modos</button>
+</section>
+
+<!-- 10 cuenta -->
+<section class="screen" id="s-cuenta" hidden>
+  <div class="bar">
+    <button class="iconbtn" data-back aria-label="Regresar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  </div>
+  <h2 style="margin-bottom:16px">Tu cuenta</h2>
+  <div class="card" id="cuenta-plan" style="margin-bottom:6px"></div>
+  <div class="rows" id="cuenta-rows"></div>
+  <div class="grow"></div>
+  <button class="btn" id="go-subir">Subir nueva dieta</button>
+</section>
+
+<!-- 11 comidas fuera -->
+<section class="screen" id="s-historial" hidden>
+  <div class="bar">
+    <button class="iconbtn" data-back aria-label="Regresar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  </div>
+  <h2>Comidas fuera</h2>
+  <p class="lead" style="margin-top:6px">Solo lo que has pedido en restaurante.</p>
+  <div id="hist-body"></div>
+</section>
+
+<!-- 12 plan -->
+<section class="screen" id="s-plan" hidden>
+  <div class="bar">
+    <button class="iconbtn" data-back aria-label="Regresar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  </div>
+  <h2 id="plan-titulo">Porciones del plan</h2>
+  <p class="lead" style="margin:6px 0 14px" id="plan-sub"></p>
+  <div id="plan-body"></div>
+</section>
+
+<!-- 13 subir dieta -->
+<section class="screen" id="s-subir" hidden>
+  <div class="bar">
+    <button class="iconbtn" data-back aria-label="Regresar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  </div>
+  <h2>Subir tu nueva dieta</h2>
+  <p class="lead" style="margin:10px 0 20px">Foto de la tabla de porciones que te dieron. Leo los tiempos de comida y te los muestro antes de guardar nada.</p>
+  <button class="drop" id="drop-plan">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+    <span style="display:block;font-weight:500">Tomar foto o elegir imagen</span>
+    <span class="tiny" style="display:block;margin-top:5px">JPG o PNG</span>
+  </button>
+  <input id="file-plan" type="file" accept="image/*" hidden>
+  <img class="prev" id="plan-prev" alt="Foto de tu plan nutricional" hidden style="margin-top:14px">
+  <div class="grow"></div>
+  <button class="btn" id="leer-plan" hidden style="margin-bottom:10px">Leer este plan</button>
+  <p class="tiny">Tu plan anterior se guarda, no se borra. Puedes volver a él cuando quieras.</p>
+</section>
+
+<!-- 14 confirmar plan -->
+<section class="screen" id="s-confirmar-plan" hidden>
+  <div class="bar">
+    <button class="iconbtn" data-back aria-label="Regresar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  </div>
+  <p class="kick">Revisa antes de guardar</p>
+  <h2 style="margin-top:7px">Esto entendí<br>de tu plan</h2>
+  <div id="cp-body" style="margin-top:16px"></div>
+  <p class="tiny" style="margin-top:12px">Toca un tiempo de comida para corregir sus porciones.</p>
+  <div class="grow"></div>
+  <div class="stack">
+    <button class="btn" id="guardar-plan">Guardar y activar</button>
+    <button class="btn quiet" id="cancelar-plan">Cancelar</button>
+  </div>
+</section>
+
+<!-- 15 registro -->
+<section class="screen" id="s-registro" hidden>
+  <div class="bar">
+    <button class="iconbtn" data-back aria-label="Regresar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  </div>
+  <div id="reg-body"></div>
+</section>
+
+<!-- 16 escribir -->
+<section class="screen" id="s-escribir" hidden>
+  <div class="bar">
+    <button class="iconbtn" data-back aria-label="Regresar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  </div>
+  <h2>¿Qué te vas a pedir?</h2>
+  <p class="lead" style="margin:8px 0 18px">Escríbelo como venga en la carta. Puedes poner varios, uno por renglón.</p>
+  <label class="fl" for="txt-platillo">Platillo</label>
+  <textarea id="txt-platillo" placeholder="Chilaquiles verdes con pollo&#10;Enchiladas de mole"></textarea>
+  <div style="margin-top:18px">
+    <p class="kick" style="margin-bottom:9px">Objetivo de esta comida</p>
+    <div class="chips" id="esc-chips"></div>
+  </div>
+  <div class="grow"></div>
+  <button class="btn" id="calcular">Calcular</button>
+</section>
+
+<!-- 17 error -->
+<section class="screen" id="s-error" hidden>
+  <div class="bar">
+    <button class="iconbtn" data-back aria-label="Regresar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  </div>
+  <div class="grow" style="display:flex;flex-direction:column;justify-content:center">
+    <h2 id="err-titulo">No pude leer el menú</h2>
+    <p class="lead" style="margin-top:12px" id="err-texto"></p>
+  </div>
+  <div class="stack">
+    <button class="btn" id="err-reintentar">Tomar otra foto</button>
+    <button class="btn ghost" id="err-escribir">Escribir el platillo</button>
+    <button class="btn quiet" id="err-conexion" hidden>Revisar la conexión</button>
+  </div>
+</section>
+
+<!-- 18 conexión -->
+<section class="screen" id="s-conexion" hidden>
+  <div class="bar">
+    <button class="iconbtn" data-back aria-label="Regresar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  </div>
+  <h2>Conexión</h2>
+  <p class="lead" style="margin:8px 0 20px">Aquí vive la dirección de tu función de servidor, la que guarda la llave de la API. Se queda solo en este celular.</p>
+  <label class="fl" for="cx-url">Dirección del servidor</label>
+  <input id="cx-url" type="url" inputmode="url" autocomplete="off" placeholder="https://plato-justo.tuusuario.workers.dev">
+  <p class="tiny" style="margin:7px 0 18px">Déjalo vacío si publicaste con Cloudflare Pages: ahí la función vive en el mismo sitio.</p>
+  <label class="fl" for="cx-clave">Clave de la app</label>
+  <input id="cx-clave" type="password" autocomplete="off" placeholder="la que pusiste en CLAVE_APP">
+  <p class="tiny" style="margin-top:7px">Es la contraseña que tú inventaste al configurar el servidor. Evita que alguien más gaste tu saldo.</p>
+  <div id="cx-msg" style="margin-top:18px" aria-live="polite"></div>
+  <div class="grow"></div>
+  <div class="stack">
+    <button class="btn" id="cx-probar">Guardar y probar</button>
+  </div>
+</section>
+
+<!-- 19 respaldo -->
+<section class="screen" id="s-respaldo" hidden>
+  <div class="bar">
+    <button class="iconbtn" data-back aria-label="Regresar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  </div>
+  <h2>Respaldo</h2>
+  <p class="lead" style="margin:10px 0 20px">Tus comidas y tus planes viven en este celular. Si limpias los datos del navegador, se borran. Baja un respaldo de vez en cuando.</p>
+  <div id="resp-msg" style="margin-bottom:14px" aria-live="polite"></div>
+  <div class="grow"></div>
+  <input id="file-resp" type="file" accept="application/json,.json" hidden>
+  <div class="stack">
+    <button class="btn" id="resp-bajar">Bajar respaldo</button>
+    <button class="btn ghost" id="resp-subir">Restaurar desde un respaldo</button>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ======================================================================
+   0. Conexión con tu función de servidor
+   Si publicaste con Cloudflare Pages, deja API_POR_DEFECTO vacío: la función
+   vive en el mismo sitio, en /api/analizar. Si publicaste el sitio en GitHub
+   Pages y el Worker aparte, pon aquí la dirección del Worker (o escríbela en
+   la pantalla de Conexión, dentro de Tu cuenta).
+   ====================================================================== */
+var API_POR_DEFECTO = "";
+
+/* ======================================================================
+   1. Plan, equivalencias y macros (SMAE)
+   ====================================================================== */
+var GK = ["verduras","frutas","cereales","proteina","grasas","lacteos","oleaginosas"];
+var GN = {
+  verduras:"Verdura", frutas:"Fruta", cereales:"Cereal", proteina:"Proteína",
+  grasas:"Grasa", lacteos:"Lácteo", oleaginosas:"Oleaginosa"
+};
+var GS = {verduras:"V", frutas:"F", cereales:"C", proteina:"P", grasas:"G", lacteos:"L", oleaginosas:"O"};
+
+var MACRO = {
+  verduras:    {kcal:25, p:2, c:4,  g:0},
+  frutas:      {kcal:60, p:0, c:15, g:0},
+  cereales:    {kcal:70, p:2, c:15, g:0},
+  proteina:    {kcal:55, p:7, c:0,  g:3},
+  grasas:      {kcal:45, p:0, c:0,  g:5},
+  lacteos:     {kcal:95, p:9, c:12, g:2},
+  oleaginosas: {kcal:70, p:3, c:3,  g:5}
+};
+
+var MEALS = ["desayuno","colacion1","comida","colacion2","cena"];
+var MEAL_LABEL = {desayuno:"Desayuno", colacion1:"Colación 1", comida:"Comida",
+                  colacion2:"Colación 2", cena:"Cena"};
+var FUERA = ["desayuno","comida","cena"];
+
+var PLAN_BASE = {
+  id:"pure-2026-09",
+  nombre:"Pure Recetario",
+  desde:"2026-09-12",
+  hasta:null,
+  comidas:{
+    desayuno:  {verduras:3,frutas:1,cereales:3,proteina:3,grasas:3,lacteos:0,oleaginosas:0},
+    colacion1: {verduras:0,frutas:2,cereales:0,proteina:0,grasas:0,lacteos:0,oleaginosas:2},
+    comida:    {verduras:3,frutas:0,cereales:3,proteina:8,grasas:3,lacteos:0,oleaginosas:0},
+    colacion2: {verduras:0,frutas:2,cereales:0,proteina:0,grasas:0,lacteos:4,oleaginosas:2},
+    cena:      {verduras:3,frutas:0,cereales:0,proteina:4,grasas:3,lacteos:0,oleaginosas:0}
+  }
+};
+
+var UMBRAL = 0.15;
+var LIBRES_MES = 3;
+
+var REFERENCIA = [
+ "Verduras: 1 eq = 1/2 taza cocida o 1 taza cruda. Papa, elote, camote y platano macho NO son verdura, cuentan como cereal.",
+ "Frutas: 1 eq = 1 manzana, 1/2 platano, 2 mandarinas, 1 taza de melon o papaya, 3/4 taza de pina.",
+ "Cereales: 1 eq = 1 tortilla de maiz, 1/4 taza de arroz cocido, 1/3 taza de pasta cocida, 1 rebanada de pan, 1/2 papa mediana, 1/2 bolillo sin migajon, 1 tostada, 4 papas a la francesa.",
+ "Proteina animal: 1 eq = 30 g de pollo, res o cerdo cocidos, 40 g de pescado, 5 camarones, 1 huevo, 2 claras, 40 g de panela, 30 g de queso Oaxaca, 2 rebanadas de jamon.",
+ "Grasas: 1 eq = 1 cdita de aceite, 1/3 de aguacate, 2 cda de guacamole, 1 cda de crema, 1 1/2 cdita de mantequilla, 1 rebanada de tocino, 1 cdita de mayonesa, 6 aceitunas.",
+ "Lacteos: 1 eq = 1 taza de leche descremada, 1/2 taza de yogurt griego natural.",
+ "Oleaginosas: 1 eq = 10 almendras, 14 cacahuates, 3 nueces, 1 cda de crema de cacahuate."
+].join("\n");
+
+var REGLAS_ESTIMACION = [
+ "Estima la porcion TIPICA de restaurante mexicano: un plato fuerte trae 150 a 250 g de proteina, una guarnicion de arroz ronda 1 taza.",
+ "Incluye las guarniciones que vienen con el plato: arroz, frijoles, tortillas, papas, pan.",
+ "Capeado, empanizado o frito suma de 2 a 4 grasas, y el empanizado suma 1 cereal.",
+ "Cuenta la crema, el queso gratinado, los aderezos, la mantequilla y el aceite de la plancha: son grasas que casi nadie cuenta.",
+ "Las verduras sin almidon son libres en este plan: pasarse de verduras no es problema."
+].join("\n");
+
+var REGLA_MODS = [
+ "Las modificaciones tienen que ser cosas que un mesero pueda cumplir sin que la cocina invente un platillo:",
+ "SI se vale: cambiar la guarnicion por otra que el lugar ya tenga, quitar crema, queso, aderezo o salsa, pedirlos aparte,",
+ "bajar el numero de piezas, y elegir entre cocciones que la cocina ya ofrece.",
+ "NO se vale: sustituir el ingrediente que define el platillo, quitarle lo que lo hace ser ese platillo, ni inventar una version que no esta en la carta.",
+ "Unos chiles rellenos sin capear ya no son chiles rellenos: en un caso asi, devuelve la lista de modificaciones VACIA.",
+ "Maximo 3 modificaciones por platillo. Si el platillo ya encaja, devuelve la lista vacia."
+].join("\n");
+
+/* ======================================================================
+   2. Utilidades
+   ====================================================================== */
+var $ = function(id){ return document.getElementById(id); };
+function el(tag, cls, txt){
+  var n = document.createElement(tag);
+  if(cls) n.className = cls;
+  if(txt != null) n.textContent = txt;
+  return n;
+}
+function svg(paths, w){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="'+(w||1.8)+
+         '" stroke-linecap="round" stroke-linejoin="round">'+paths+'</svg>';
+}
+var ICON = {
+  chev:'<path d="M9 18l6-6-6-6"/>',
+  reloj:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  alerta:'<path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>'
+};
+function vacio(){ var o={}; GK.forEach(function(g){ o[g]=0; }); return o; }
+function limpiaEq(raw){
+  var o = vacio();
+  if(!raw) return o;
+  GK.forEach(function(g){
+    var n = Number(raw[g]);
+    if(isFinite(n) && n > 0) o[g] = Math.round(n*2)/2;
+  });
+  return o;
+}
+function sumaEq(a,b){
+  var o = vacio();
+  GK.forEach(function(g){ o[g] = Math.max(0, Math.round(((a[g]||0)+(b[g]||0))*2)/2); });
+  return o;
+}
+function fmtEq(n){
+  n = Math.round(Number(n)*2)/2;
+  if(!isFinite(n)) return "0";
+  return (n % 1 === 0) ? String(n) : (Math.floor(n) ? Math.floor(n)+"½" : "½");
+}
+function kcalDe(eq){
+  var k = 0;
+  GK.forEach(function(g){ k += (eq[g]||0) * MACRO[g].kcal; });
+  return Math.round(k);
+}
+function macrosDe(eq){
+  var p=0,c=0,g=0;
+  GK.forEach(function(k){
+    p += (eq[k]||0)*MACRO[k].p; c += (eq[k]||0)*MACRO[k].c; g += (eq[k]||0)*MACRO[k].g;
+  });
+  return {p:Math.round(p), c:Math.round(c), g:Math.round(g)};
+}
+function exceso(eq, target){
+  var x = 0;
+  GK.forEach(function(g){
+    if(g === "verduras") return;
+    var d = (eq[g]||0) - (target[g]||0);
+    if(d > 0) x += d;
+  });
+  return Math.round(x*2)/2;
+}
+function excesoPct(eq, target){
+  var t = {};
+  GK.forEach(function(g){ t[g] = target[g]||0; });
+  t.verduras = Math.max(t.verduras, eq.verduras||0);
+  var kt = kcalDe(t);
+  if(!kt) return 0;
+  return (kcalDe(eq) - kt) / kt;
+}
+function veredicto(eqBase, eqMod, target, hayMods){
+  if(exceso(eqBase, target) <= 0.5) return "encaja";
+  if(hayMods && exceso(eqMod, target) <= 1) return "ajustable";
+  return "pasa";
+}
+var V_TXT = {encaja:"Encaja", ajustable:"Ajustable", pasa:"Se pasa"};
+
+function resumenEq(t){
+  return GK.filter(function(g){ return t[g] > 0; })
+           .map(function(g){ return t[g]+" "+GS[g]; }).join(" · ");
+}
+var DIAS = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+var DIAS_C = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
+var MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto",
+             "septiembre","octubre","noviembre","diciembre"];
+function fechaLarga(d){ return DIAS[d.getDay()]+" "+d.getDate()+" de "+MESES[d.getMonth()]; }
+function fechaCorta(iso){
+  var d = new Date(iso), hoy = new Date();
+  var mismo = function(a,b){ return a.toDateString() === b.toDateString(); };
+  if(mismo(d,hoy)) return "Hoy";
+  if(mismo(d,new Date(hoy.getTime()-86400000))) return "Ayer";
+  if(hoy.getTime() - d.getTime() < 6*86400000) return DIAS_C[d.getDay()]+" "+d.getDate();
+  return d.getDate()+" de "+MESES[d.getMonth()];
+}
+function fechaCortaISO(iso){
+  var p = String(iso).split("-");
+  if(p.length < 3) return iso;
+  return Number(p[2])+" de "+MESES[Number(p[1])-1];
+}
+function hora(iso){
+  var d = new Date(iso);
+  return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+}
+function mesClave(iso){ var d = new Date(iso); return d.getFullYear()+"-"+(d.getMonth()+1); }
+function nombreMes(iso){ return MESES[new Date(iso).getMonth()]; }
+function idNuevo(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+/* ======================================================================
+   3. Guardado en el celular
+   ====================================================================== */
+var LS = "platojusto.v3";
+var store = {
+  cache:{planes:[], registros:[], activo:null, api:null, clave:null},
+  cargar(){
+    try{
+      var raw = localStorage.getItem(LS);
+      if(raw){
+        var v = JSON.parse(raw);
+        this.cache.planes = v.planes || [];
+        this.cache.registros = v.registros || [];
+        this.cache.activo = v.activo || null;
+        this.cache.api = v.api || null;
+        this.cache.clave = v.clave || null;
+      }
+    }catch(e){}
+    if(!this.cache.planes.length){
+      this.cache.planes = [JSON.parse(JSON.stringify(PLAN_BASE))];
+      this.cache.activo = PLAN_BASE.id;
+      this.guardar();
+    }
+  },
+  guardar(){
+    try{ localStorage.setItem(LS, JSON.stringify(this.cache)); }catch(e){}
+  },
+  planActivo(){
+    var id = this.cache.activo, ps = this.cache.planes;
+    for(var i=0;i<ps.length;i++){ if(ps[i].id === id) return ps[i]; }
+    return ps[ps.length-1] || PLAN_BASE;
+  },
+  guardarPlan(plan, activar){
+    var anterior = this.planActivo();
+    if(activar && anterior && anterior.id !== plan.id && !anterior.hasta){
+      anterior.hasta = new Date().toISOString().slice(0,10);
+    }
+    var hecho = false;
+    for(var i=0;i<this.cache.planes.length;i++){
+      if(this.cache.planes[i].id === plan.id){ this.cache.planes[i] = plan; hecho = true; }
+    }
+    if(!hecho) this.cache.planes.push(plan);
+    if(activar) this.cache.activo = plan.id;
+    this.guardar();
+  },
+  agregarRegistro(r){
+    this.cache.registros.unshift(r);
+    if(this.cache.registros.length > 500) this.cache.registros.length = 500;
+    this.guardar();
+  },
+  libresDelMes(iso){
+    var m = mesClave(iso || new Date().toISOString());
+    return this.cache.registros.filter(function(r){
+      return r.libre && mesClave(r.ts) === m;
+    }).length;
+  },
+  api(){ return (this.cache.api != null ? this.cache.api : API_POR_DEFECTO) || ""; },
+  clave(){ return this.cache.clave || ""; }
+};
+
+/* ======================================================================
+   4. Llamada al modelo, a través de tu función de servidor
+   ====================================================================== */
+function encoge(file){
+  return new Promise(function(resolve, reject){
+    var img = new Image();
+    var url = URL.createObjectURL(file);
+    img.onload = function(){
+      URL.revokeObjectURL(url);
+      var max = 1600;
+      var w = img.naturalWidth, h = img.naturalHeight;
+      var esc = Math.min(1, max / Math.max(w, h));
+      var c = document.createElement("canvas");
+      c.width = Math.round(w * esc);
+      c.height = Math.round(h * esc);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      var datos = c.toDataURL("image/jpeg", 0.82);
+      resolve({tipo:"image/jpeg", datos: datos.slice(datos.indexOf(",")+1)});
+    };
+    img.onerror = function(){ URL.revokeObjectURL(url); reject({code:"image_rejected"}); };
+    img.src = url;
+  });
+}
+
+async function pedirModelo(prompt, file, signal){
+  var base = store.api().replace(/\/+$/, "");
+  var url = base ? (base + "/api/analizar") : "/api/analizar";
+  if(base && /workers\.dev$/.test(base)) url = base;    /* un Worker suelto responde en su raíz */
+
+  var cuerpo = {prompt: prompt};
+  if(file){
+    try{ cuerpo.imagen = await encoge(file); }
+    catch(e){ throw {code:"image_rejected"}; }
+  }
+  var headers = {"content-type":"application/json"};
+  if(store.clave()) headers["x-clave-app"] = store.clave();
+
+  var res;
+  try{
+    res = await fetch(url, {method:"POST", headers:headers, body:JSON.stringify(cuerpo), signal:signal});
+  }catch(e){
+    if(e && e.name === "AbortError") throw {code:"cancelled"};
+    throw {code:"sin_conexion"};
+  }
+  var datos = null;
+  try{ datos = await res.json(); }catch(e){}
+  if(!res.ok || !datos || datos.error){
+    throw {code: (datos && datos.error) || (res.status === 404 ? "sin_servidor" : "error_api")};
+  }
+  var texto = String(datos.texto || "");
+  var a = texto.indexOf("{"), b = texto.lastIndexOf("}");
+  if(a === -1 || b === -1) throw {code:"invalid_json"};
+  try{ return JSON.parse(texto.slice(a, b+1)); }
+  catch(e){ throw {code:"invalid_json"}; }
+}
+
+/* ======================================================================
+   5. Estado y navegación
+   ====================================================================== */
+var S = {meal:"comida", foto:null, fotoPlan:null, platillos:[], sel:-1, mods:[], planLeido:null};
+var ctl = null, pila = [];
+
+var PANTALLAS = ["s-inicio","s-captura","s-leyendo","s-resultado","s-menu","s-detalle",
+                 "s-confirmar","s-listo","s-libre","s-cuenta","s-historial","s-plan",
+                 "s-subir","s-confirmar-plan","s-registro","s-escribir","s-error",
+                 "s-conexion","s-respaldo"];
+function ir(id, sinPila){
+  if(!sinPila){
+    var actual = PANTALLAS.filter(function(p){ return !$(p).hidden; })[0];
+    if(actual && actual !== id) pila.push(actual);
+  }
+  PANTALLAS.forEach(function(p){ $(p).hidden = (p !== id); });
+  window.scrollTo(0,0);
+  var h = $(id).querySelector("h1,h2");
+  if(h){ h.setAttribute("tabindex","-1"); h.focus({preventScroll:true}); }
+}
+function atras(){
+  var previa = pila.pop() || "s-inicio";
+  PANTALLAS.forEach(function(p){ $(p).hidden = (p !== previa); });
+  window.scrollTo(0,0);
+}
+function inicio(){ pila = []; ir("s-inicio", true); pintaInicio(); }
+
+/* ======================================================================
+   6. Inicio
+   ====================================================================== */
+function pintaInicio(){
+  var ahora = new Date();
+  $("reloj").textContent = String(ahora.getHours()).padStart(2,"0")+":"+
+                           String(ahora.getMinutes()).padStart(2,"0");
+  $("fecha").textContent = fechaLarga(ahora);
+  var h = ahora.getHours();
+  var sugerida = (h < 11.5) ? "desayuno" : (h < 18 ? "comida" : "cena");
+  var caja = $("opciones");
+  caja.textContent = "";
+  FUERA.forEach(function(m){
+    var b = el("button","opt");
+    b.type = "button";
+    b.appendChild(document.createTextNode(MEAL_LABEL[m]));
+    if(m === sugerida){
+      b.classList.add("now");
+      b.appendChild(el("span","hint","ahora"));
+    }
+    b.addEventListener("click", function(){ eligeComida(m); });
+    caja.appendChild(b);
+  });
+}
+function eligeComida(m){
+  S.meal = m;
+  S.foto = null;
+  S.platillos = [];
+  $("cap-meal").textContent = MEAL_LABEL[m];
+  $("cap-prev").hidden = true;
+  $("analizar").hidden = true;
+  ir("s-captura");
+  try{ $("file-menu").click(); }catch(e){}
+}
+function objetivo(meal, plan){
+  var p = plan || store.planActivo();
+  return limpiaEq((p.comidas && p.comidas[meal]) || {});
+}
+
+/* ======================================================================
+   7. Lectura del menú
+   ====================================================================== */
+function promptMenu(texto){
+  var t = objetivo(S.meal);
+  var obj = GK.filter(function(g){ return t[g] > 0; })
+              .map(function(g){ return GN[g]+": "+t[g]; }).join(", ");
+  var p =
+"Eres nutriologo y traduces platillos de restaurante al Sistema Mexicano de Alimentos Equivalentes (SMAE).\n\n"+
+"UN EQUIVALENTE DE CADA GRUPO:\n"+REFERENCIA+"\n\n"+
+"COMO ESTIMAR:\n"+REGLAS_ESTIMACION+"\n\n"+
+"MODIFICACIONES:\n"+REGLA_MODS+"\n\n"+
+"OBJETIVO DE ESTA COMIDA ("+MEAL_LABEL[S.meal]+"): "+obj+". Los grupos que no aparecen valen 0.\n\n";
+  if(S.foto && !texto){
+    p += "Lee el menu de la imagen. Usa el nombre tal como aparece en la carta. Incluye platos fuertes, "+
+         "ensaladas y desayunos. Ignora bebidas, postres y entradas: solo el plato fuerte. Maximo 12 platillos.\n\n";
+  }
+  if(texto){
+    p += "Platillos escritos por el usuario:\n"+texto.slice(0,2000)+"\n\n";
+  }
+  p += "Para cada platillo estima los EQUIVALENTES de la porcion TAL COMO LA SIRVEN, sin modificaciones "+
+       "(se permiten medios: 0.5, 1, 2.5). Luego propon las modificaciones realistas y, para cada una, "+
+       "cuanto CAMBIAN esos equivalentes (numeros negativos para lo que quita).\n\n"+
+"Responde SOLO con este JSON, sin texto alrededor:\n"+
+'{"platillos":[{"nombre":"string",'+
+'"eq":{"verduras":0,"frutas":0,"cereales":0,"proteina":0,"grasas":0,"lacteos":0,"oleaginosas":0},'+
+'"porQue":"una frase de por que encaja o no contra el objetivo",'+
+'"modificaciones":[{"texto":"lo que le dices al mesero","efecto":{"cereales":-2,"grasas":-1}}]}],'+
+'"recomendacion":{"platillo":"nombre exacto de uno de la lista","porque":"una frase"}}\n\n'+
+"Escribe en espanol de Mexico, directo, sin adornos. Cada frase de maximo 18 palabras. "+
+"El campo efecto solo lleva los grupos que cambian.";
+  return p;
+}
+
+function analizaMenu(texto){
+  $("leyendo-msg").textContent = texto ? "Estimando las equivalencias." : "Tarda unos segundos.";
+  ir("s-leyendo");
+  ctl = new AbortController();
+  pedirModelo(promptMenu(texto), texto ? null : S.foto, ctl.signal).then(function(data){
+    if(!data || !Array.isArray(data.platillos) || !data.platillos.length) throw {code:"invalid_json"};
+    var t = objetivo(S.meal);
+    S.platillos = data.platillos.filter(function(d){ return d && d.nombre; }).map(function(d){
+      var base = limpiaEq(d.eq);
+      var mods = (Array.isArray(d.modificaciones) ? d.modificaciones : [])
+        .filter(function(m){ return m && m.texto; }).slice(0,3)
+        .map(function(m){
+          var ef = {};
+          GK.forEach(function(g){
+            var n = Number((m.efecto||{})[g]);
+            if(isFinite(n) && n !== 0) ef[g] = Math.round(n*2)/2;
+          });
+          return {texto:String(m.texto), efecto:ef};
+        });
+      var conMods = base;
+      mods.forEach(function(m){ conMods = sumaEq(conMods, m.efecto); });
+      return {
+        nombre:String(d.nombre),
+        porQue:d.porQue ? String(d.porQue) : "",
+        eq:base, eqMod:conMods, mods:mods,
+        v:veredicto(base, conMods, t, mods.length),
+        exc:exceso(conMods, t)
+      };
+    });
+    S.platillos.sort(function(a,b){
+      var orden = {encaja:0, ajustable:1, pasa:2};
+      if(orden[a.v] !== orden[b.v]) return orden[a.v] - orden[b.v];
+      return a.exc - b.exc;
+    });
+    var rec = data.recomendacion || {};
+    var i = 0;
+    for(var k=0;k<S.platillos.length;k++){
+      if(rec.platillo && S.platillos[k].nombre === rec.platillo){ i = k; break; }
+    }
+    if(S.platillos[i].v === "pasa" && S.platillos[0].v !== "pasa") i = 0;
+    S.sel = i;
+    S.platillos[i].porque = rec.porque || S.platillos[i].porQue;
+    if(S.platillos.every(function(d){ return d.v === "pasa"; })) pintaLibre();
+    else pintaResultado();
+  }).catch(function(e){
+    var code = (e && e.code) || "error_api";
+    if(code === "cancelled") return;
+    muestraError(code);
+  });
+}
+
+/* ======================================================================
+   8. Resultado, menú y detalle
+   ====================================================================== */
+function pintaResultado(){
+  var d = S.platillos[S.sel];
+  $("res-meal").textContent = MEAL_LABEL[S.meal];
+  var box = $("res-body");
+  box.textContent = "";
+  box.appendChild(el("p","kick","Pide esto"));
+  var h = el("h1", null, d.nombre);
+  h.style.margin = "8px 0 12px";
+  box.appendChild(h);
+  var chips = el("div","chips");
+  chips.style.marginBottom = "6px";
+  chips.appendChild(el("span","v "+d.v, V_TXT[d.v]));
+  chips.appendChild(el("span","chip","~"+kcalDe(d.eqMod)+" kcal"));
+  box.appendChild(chips);
+  box.appendChild(el("p","tiny","Estimado a partir de ingredientes típicos."));
+  if(d.porque){
+    var pq = el("p","lead", d.porque);
+    pq.style.margin = "14px 0 0";
+    box.appendChild(pq);
+  }
+  if(d.mods.length){
+    var t3 = el("h3", null, "Cómo pedirlo");
+    t3.style.margin = "20px 0 4px";
+    box.appendChild(t3);
+    var ul = el("ul","mods");
+    d.mods.forEach(function(m){ ul.appendChild(el("li", null, m.texto)); });
+    box.appendChild(ul);
+  }else{
+    var sin = el("p","lead","Pídelo tal cual viene en la carta.");
+    sin.style.margin = "18px 0 0";
+    box.appendChild(sin);
+  }
+  var otros = S.platillos.length - 1;
+  $("ver-menu").textContent = otros > 0 ? ("Ver los otros "+otros+" platillos") : "Ver el detalle";
+  ir("s-resultado");
+}
+function razonCorta(d, t){
+  var partes = [];
+  GK.forEach(function(g){
+    if(g === "verduras") return;
+    var dif = (d.eqMod[g]||0) - (t[g]||0);
+    if(dif >= 0.5) partes.push("+"+fmtEq(dif)+" "+GN[g].toLowerCase());
+  });
+  if(!partes.length && d.mods.length) return "con "+d.mods.length+(d.mods.length === 1 ? " cambio" : " cambios");
+  if(!partes.length) return "cuadra tal cual";
+  return partes.slice(0,2).join(", ");
+}
+function pintaMenu(){
+  var t = objetivo(S.meal);
+  $("menu-sub").textContent = S.platillos.length+" platillos leídos, contra tu "+
+                              MEAL_LABEL[S.meal].toLowerCase()+".";
+  var box = $("menu-rows");
+  box.textContent = "";
+  S.platillos.forEach(function(d, i){
+    var b = el("button","row");
+    b.type = "button";
+    var izq = el("div");
+    izq.appendChild(el("div","t", d.nombre));
+    izq.appendChild(el("div","s", razonCorta(d, t)));
+    b.appendChild(izq);
+    b.appendChild(el("span","v "+d.v, V_TXT[d.v]));
+    b.addEventListener("click", function(){ S.sel = i; pintaDetalle(); });
+    box.appendChild(b);
+  });
+  ir("s-menu");
+}
+function pintaDetalle(){
+  var d = S.platillos[S.sel];
+  var t = objetivo(S.meal);
+  var box = $("det-body");
+  box.textContent = "";
+  box.appendChild(el("h2", null, d.nombre));
+  var chips = el("div","chips");
+  chips.style.margin = "12px 0 18px";
+  chips.appendChild(el("span","v "+d.v, V_TXT[d.v]));
+  chips.appendChild(el("span","chip","~"+kcalDe(d.eqMod)+" kcal"));
+  box.appendChild(chips);
+  GK.forEach(function(g){
+    var obj = t[g]||0, est = d.eqMod[g]||0;
+    if(!obj && !est) return;
+    var grp = el("div","grp");
+    var lbl = el("div","lbl");
+    lbl.appendChild(el("b", null, GN[g]));
+    lbl.appendChild(el("span", null,
+      g === "verduras" ? (fmtEq(est)+", libre") : (fmtEq(est)+" de "+fmtEq(obj))));
+    grp.appendChild(lbl);
+    var tope = Math.max(obj, est, 1);
+    var bar = el("div","bar2");
+    var fill = el("i");
+    fill.style.width = Math.min(100, (est/tope)*100)+"%";
+    bar.appendChild(fill);
+    if(obj > 0 && g !== "verduras"){
+      var tick = el("u");
+      tick.style.left = ((obj/tope)*100)+"%";
+      bar.appendChild(tick);
+    }
+    grp.appendChild(bar);
+    box.appendChild(grp);
+  });
+  var leyenda = el("p","tiny","La rayita es tu objetivo del grupo. La barra es lo que trae el platillo con los cambios de abajo.");
+  leyenda.style.margin = "2px 0 18px";
+  box.appendChild(leyenda);
+  if(d.mods.length){
+    box.appendChild(el("h3", null, "Cómo ajustarlo"));
+    var ul = el("ul","mods");
+    d.mods.forEach(function(m){ ul.appendChild(el("li", null, m.texto)); });
+    box.appendChild(ul);
+  }else{
+    box.appendChild(el("p","lead", d.v === "pasa"
+      ? "No hay forma realista de ajustarlo: habría que cambiarle lo que lo define."
+      : "No necesita cambios."));
+  }
+  ir("s-detalle");
+}
+
+/* ======================================================================
+   9. Confirmar y registrar
+   ====================================================================== */
+function pintaConfirmar(){
+  var d = S.platillos[S.sel];
+  S.mods = d.mods.map(function(){ return true; });
+  $("conf-titulo").textContent = d.mods.length ? "¿Salió como lo pediste?" : "¿Te lo pediste?";
+  var box = $("conf-checks");
+  box.textContent = "";
+  if(!d.mods.length){
+    var c = el("div","card");
+    c.appendChild(el("h3", null, d.nombre));
+    var pp = el("p","lead","Sin cambios. Se registra tal como viene en la carta.");
+    pp.style.marginTop = "6px";
+    c.appendChild(pp);
+    box.appendChild(c);
+  }
+  d.mods.forEach(function(m, i){
+    var b = el("button","check");
+    b.type = "button";
+    b.setAttribute("aria-pressed","true");
+    b.appendChild(el("span", null, m.texto));
+    var caja = el("span","box");
+    caja.innerHTML = svg(ICON.check, 3);
+    b.appendChild(caja);
+    b.addEventListener("click", function(){
+      S.mods[i] = !S.mods[i];
+      b.setAttribute("aria-pressed", String(S.mods[i]));
+      pintaAvisoConfirmar();
+    });
+    box.appendChild(b);
+  });
+  pintaAvisoConfirmar();
+  ir("s-confirmar");
+}
+function eqReal(){
+  var d = S.platillos[S.sel];
+  var eq = d.eq;
+  d.mods.forEach(function(m, i){ if(S.mods[i]) eq = sumaEq(eq, m.efecto); });
+  return eq;
+}
+function pintaAvisoConfirmar(){
+  var box = $("conf-aviso");
+  box.textContent = "";
+  var pct = excesoPct(eqReal(), objetivo(S.meal));
+  if(pct <= UMBRAL) return;
+  var n = el("div","note");
+  n.innerHTML = svg(ICON.alerta, 1.9);
+  n.appendChild(el("p", null, "Así, esta comida queda cerca de "+Math.round(pct*100)+"% arriba de tu objetivo."));
+  box.appendChild(n);
+}
+function registrar(libre){
+  var plan = store.planActivo();
+  var t = objetivo(S.meal, plan);
+  var d = (S.sel >= 0 && S.platillos[S.sel]) ? S.platillos[S.sel] : null;
+  var eq = libre ? (d ? d.eq : vacio()) : eqReal();
+  var pct = excesoPct(eq, t);
+  var hechas = d ? d.mods.filter(function(m,i){ return S.mods[i]; }).length : 0;
+  var r = {
+    id: idNuevo(), ts: new Date().toISOString(), meal: S.meal,
+    platillo: d ? d.nombre : "Comida libre",
+    eq: eq, target: t, kcal: kcalDe(eq), macros: macrosDe(eq),
+    planId: plan.id, planNombre: plan.nombre, planDesde: plan.desde || "",
+    libre: !!libre, excesoPct: pct > UMBRAL ? Math.round(pct*100) : null,
+    modsHechas: hechas, modsTotal: d ? d.mods.length : 0
+  };
+  store.agregarRegistro(r);
+  pintaListo(r);
+}
+function pintaListo(r){
+  $("listo-titulo").textContent = r.libre ? "Comida libre registrada" : MEAL_LABEL[r.meal]+" registrada";
+  var sub = r.platillo;
+  if(!r.libre && r.modsTotal){
+    sub += ", con "+r.modsHechas+" de "+r.modsTotal+(r.modsTotal === 1 ? " cambio" : " cambios");
+  }
+  $("listo-sub").textContent = sub+".";
+  var box = $("listo-aviso");
+  box.textContent = "";
+  if(r.excesoPct){
+    var n = el("div","note");
+    n.innerHTML = svg(ICON.alerta, 1.9);
+    n.appendChild(el("p", null,
+      "Quedó "+r.excesoPct+"% arriba del objetivo de esta comida. Lo anoté así en tu historial."));
+    box.appendChild(n);
+  }else if(r.libre){
+    var usadas = store.libresDelMes(r.ts);
+    box.appendChild(el("p","tiny", usadas >= LIBRES_MES
+      ? ("Llevas "+usadas+" este mes.") : ("Llevas "+usadas+" de "+LIBRES_MES+" este mes.")));
+  }
+  pila = [];
+  ir("s-listo", true);
+}
+function pintaLibre(){
+  var t = objetivo(S.meal);
+  S.platillos.sort(function(a,b){ return a.exc - b.exc; });
+  S.sel = 0;
+  var d = S.platillos[0];
+  $("libre-sub").textContent = "Leí "+S.platillos.length+" platillos. Todos se pasan por mucho, y "+
+    "acercarlos pediría cambiarles justo lo que los hace ser ese platillo.";
+  var box = $("libre-menos");
+  box.textContent = "";
+  box.appendChild(el("p","kick","Lo menos lejos"));
+  var row = el("div","row static");
+  row.style.borderBottom = "0";
+  var izq = el("div");
+  izq.appendChild(el("div","t", d.nombre));
+  izq.appendChild(el("div","s", razonCorta(d, t)));
+  row.appendChild(izq);
+  row.appendChild(el("span","v pasa", V_TXT.pasa));
+  box.appendChild(row);
+  var usadas = store.libresDelMes();
+  var c = $("libre-cuenta");
+  c.textContent = "";
+  c.appendChild(el("p","kick","Comidas libres de "+nombreMes(new Date().toISOString())));
+  var dots = el("div","dots");
+  for(var i=0;i<Math.max(LIBRES_MES, usadas);i++) dots.appendChild(el("i", i < usadas ? "" : "off"));
+  c.appendChild(dots);
+  c.appendChild(el("p","tiny", usadas >= LIBRES_MES
+    ? ("Llevas "+usadas+" este mes.")
+    : ("Llevas "+usadas+" de "+LIBRES_MES+". Te "+(LIBRES_MES-usadas === 1 ? "queda una" : "quedan "+(LIBRES_MES-usadas))+".")));
+  ir("s-libre");
+}
+
+/* ======================================================================
+   10. Cuenta, historial, plan
+   ====================================================================== */
+function pintaCuenta(){
+  var plan = store.planActivo();
+  var c = $("cuenta-plan");
+  c.textContent = "";
+  c.appendChild(el("p","kick","Plan activo"));
+  var h = el("h3", null, plan.nombre);
+  h.style.margin = "6px 0 4px";
+  c.appendChild(h);
+  c.appendChild(el("p","tiny", plan.desde ? ("Desde el "+fechaCortaISO(plan.desde)+".") : ""));
+  var chips = el("div","chips");
+  chips.style.marginTop = "11px";
+  var t = plan.comidas.comida || {};
+  GK.filter(function(g){ return t[g] > 0; }).forEach(function(g){
+    chips.appendChild(el("span","chip", t[g]+" "+GN[g].toLowerCase()));
+  });
+  c.appendChild(chips);
+  var nota = el("p","tiny","Porciones de tu comida. Los demás tiempos, en Porciones del plan.");
+  nota.style.marginTop = "8px";
+  c.appendChild(nota);
+
+  var rows = $("cuenta-rows");
+  rows.textContent = "";
+  var libres = store.libresDelMes();
+  var lista = [
+    {t:"Comidas fuera", s:store.cache.registros.length+" registradas", go:function(){ pintaHistorial(); }},
+    {t:"Comidas libres", s:libres+" de "+LIBRES_MES+" en "+nombreMes(new Date().toISOString()),
+     go:function(){ pintaHistorial(true); }},
+    {t:"Porciones del plan", s:"los 5 tiempos completos", go:function(){ pintaPlan(plan); }}
+  ];
+  var anteriores = store.cache.planes.filter(function(p){ return p.id !== plan.id; });
+  if(anteriores.length){
+    lista.push({t:"Planes anteriores", s:anteriores.length+" guardado"+(anteriores.length>1?"s":""),
+      go:function(){ pintaPlan(anteriores[anteriores.length-1]); }});
+  }
+  lista.push({t:"Conexión", s:store.api() ? store.api().replace(/^https?:\/\//,"") : "en este mismo sitio",
+    go:function(){ pintaConexion(); }});
+  lista.push({t:"Respaldo", s:"bajar o restaurar tus datos", go:function(){ pintaRespaldo(); }});
+
+  lista.forEach(function(o){
+    var b = el("button","row");
+    b.type = "button";
+    var izq = el("div");
+    izq.appendChild(el("div","t", o.t));
+    izq.appendChild(el("div","s", o.s));
+    b.appendChild(izq);
+    var ch = el("span","chev");
+    ch.innerHTML = svg(ICON.chev, 1.9);
+    b.appendChild(ch);
+    b.addEventListener("click", o.go);
+    rows.appendChild(b);
+  });
+  ir("s-cuenta");
+}
+function pintaHistorial(soloLibres){
+  var box = $("hist-body");
+  box.textContent = "";
+  var activo = store.planActivo();
+  var regs = store.cache.registros.slice().sort(function(a,b){ return a.ts < b.ts ? 1 : -1; });
+  if(soloLibres) regs = regs.filter(function(r){ return r.libre; });
+  if(!regs.length){
+    var v = el("div","card");
+    v.style.marginTop = "22px";
+    v.appendChild(el("h3", null, soloLibres ? "Ninguna comida libre todavía" : "Todavía no hay nada aquí"));
+    var p = el("p","lead", soloLibres
+      ? "Aquí van a aparecer las veces que ningún platillo del menú se te acomodó."
+      : "Cada vez que registres una comida en un restaurante, se guarda aquí con su fecha, su hora y sus macros aproximados.");
+    p.style.marginTop = "7px";
+    v.appendChild(p);
+    box.appendChild(v);
+    ir("s-historial");
+    return;
+  }
+  var dia = null;
+  regs.forEach(function(r){
+    var d = fechaCorta(r.ts);
+    if(d !== dia){
+      dia = d;
+      var hdr = el("div","dayhdr");
+      hdr.appendChild(el("span", null, d));
+      box.appendChild(hdr);
+    }
+    var b = el("button","row");
+    b.type = "button";
+    var izq = el("div");
+    izq.appendChild(el("div","hmeta", hora(r.ts)+" · "+MEAL_LABEL[r.meal]));
+    izq.appendChild(el("div","t", r.platillo));
+    var m = r.macros || {p:0,c:0,g:0};
+    izq.appendChild(el("div","macros",
+      r.kcal+" kcal · "+m.p+" P · "+m.c+" C · "+m.g+" G"+
+      (r.excesoPct ? ("  · +"+r.excesoPct+"%") : "")));
+    b.appendChild(izq);
+    if(r.libre){
+      b.appendChild(el("span","lib","libre"));
+    }else if(r.planId !== activo.id){
+      var bg = el("span","badge");
+      bg.innerHTML = svg(ICON.reloj, 1.9);
+      bg.setAttribute("aria-label","Medida con un plan anterior");
+      b.appendChild(bg);
+    }else{
+      var ch = el("span","chev");
+      ch.innerHTML = svg(ICON.chev, 1.9);
+      b.appendChild(ch);
+    }
+    b.addEventListener("click", function(){ pintaRegistro(r); });
+    box.appendChild(b);
+  });
+  ir("s-historial");
+}
+function pintaRegistro(r){
+  var box = $("reg-body");
+  box.textContent = "";
+  var activo = store.planActivo();
+  box.appendChild(el("p","kick", fechaCorta(r.ts)+", "+hora(r.ts)));
+  var h = el("h2", null, r.platillo);
+  h.style.margin = "8px 0 12px";
+  box.appendChild(h);
+  var chips = el("div","chips");
+  if(r.libre) chips.appendChild(el("span","lib","comida libre"));
+  chips.appendChild(el("span","chip", r.kcal+" kcal"));
+  var m = r.macros || {p:0,c:0,g:0};
+  chips.appendChild(el("span","chip", m.p+" P · "+m.c+" C · "+m.g+" G"));
+  box.appendChild(chips);
+  if(r.excesoPct){
+    var n = el("div","note");
+    n.style.marginTop = "14px";
+    n.innerHTML = svg(ICON.alerta, 1.9);
+    n.appendChild(el("p", null, "Quedó "+r.excesoPct+"% arriba del objetivo de esa comida."));
+    box.appendChild(n);
+  }
+  var t3 = el("h3", null, "Equivalentes de esa comida");
+  t3.style.margin = "22px 0 10px";
+  box.appendChild(t3);
+  GK.forEach(function(g){
+    var obj = (r.target||{})[g]||0, est = (r.eq||{})[g]||0;
+    if(!obj && !est) return;
+    var row = el("div","row static");
+    var izq = el("div");
+    izq.appendChild(el("div","t", GN[g]));
+    row.appendChild(izq);
+    row.appendChild(el("span","macros",
+      g === "verduras" ? (fmtEq(est)+", libre") : (fmtEq(est)+" de "+fmtEq(obj))));
+    box.appendChild(row);
+  });
+  if(r.planId !== activo.id){
+    var c = el("div","card");
+    c.style.marginTop = "22px";
+    c.appendChild(el("p","kick","Se midió con"));
+    var hh = el("h3", null, r.planNombre || "Plan anterior");
+    hh.style.margin = "6px 0 8px";
+    c.appendChild(hh);
+    var f1 = el("div","row static");
+    f1.appendChild(el("span", null, "Ese plan"));
+    f1.appendChild(el("span","macros", resumenEq(r.target || {})));
+    var f2 = el("div","row static");
+    f2.style.borderBottom = "0";
+    f2.appendChild(el("span", null, "Plan de hoy"));
+    f2.appendChild(el("span","macros", resumenEq(objetivo(r.meal, activo))));
+    c.appendChild(f1); c.appendChild(f2);
+    var nota = el("p","tiny","Este registro no se recalcula: se quedó con el plan que tenías ese día.");
+    nota.style.marginTop = "10px";
+    c.appendChild(nota);
+    box.appendChild(c);
+  }
+  ir("s-registro");
+}
+function pintaPlan(plan){
+  $("plan-titulo").textContent = plan.nombre;
+  $("plan-sub").textContent = (plan.desde ? "Desde el "+fechaCortaISO(plan.desde) : "")+
+    (plan.hasta ? " hasta el "+fechaCortaISO(plan.hasta) : "")+".";
+  var box = $("plan-body");
+  box.textContent = "";
+  MEALS.forEach(function(m){
+    var t = limpiaEq(plan.comidas[m] || {});
+    var row = el("div","row static");
+    var izq = el("div");
+    izq.appendChild(el("div","t", MEAL_LABEL[m]));
+    row.appendChild(izq);
+    row.appendChild(el("span","macros", resumenEq(t) || "sin porciones"));
+    box.appendChild(row);
+  });
+  var leyenda = el("p","tiny","V verdura, F fruta, C cereal, P proteína, G grasa, L lácteo, O oleaginosa.");
+  leyenda.style.marginTop = "14px";
+  box.appendChild(leyenda);
+  ir("s-plan");
+}
+
+/* ======================================================================
+   11. Subir dieta
+   ====================================================================== */
+function promptPlan(){
+  return "Lee la tabla de porciones de este plan nutricional mexicano, hecho con el Sistema Mexicano "+
+"de Alimentos Equivalentes (SMAE). Dice cuantas porciones de cada grupo van en cada tiempo de comida.\n\n"+
+"Grupos posibles: verduras, frutas, cereales (o cereales y tuberculos), proteina (alimentos de origen "+
+"animal), grasas, lacteos (o lechadas), oleaginosas (o grasas con proteina).\n\n"+
+"Tiempos posibles: desayuno, colacion1 (colacion matutina), comida, colacion2 (colacion vespertina), cena.\n\n"+
+"Si un grupo no aparece en un tiempo de comida, vale 0. Usa numeros enteros o medios.\n\n"+
+"Responde SOLO con este JSON:\n"+
+'{"nombre":"nombre del plan o de quien lo hizo, corto",'+
+'"comidas":{"desayuno":{"verduras":0,"frutas":0,"cereales":0,"proteina":0,"grasas":0,"lacteos":0,"oleaginosas":0},'+
+'"colacion1":{},"comida":{},"colacion2":{},"cena":{}}}';
+}
+function leePlan(){
+  if(!S.fotoPlan) return;
+  $("leyendo-msg").textContent = "Leyendo las porciones de tu plan.";
+  ir("s-leyendo");
+  ctl = new AbortController();
+  pedirModelo(promptPlan(), S.fotoPlan, ctl.signal).then(function(data){
+    if(!data || !data.comidas) throw {code:"invalid_json"};
+    var plan = {
+      id: idNuevo(),
+      nombre: (data.nombre ? String(data.nombre).slice(0,40) : "Plan nuevo"),
+      desde: new Date().toISOString().slice(0,10),
+      hasta: null, comidas: {}
+    };
+    var algo = false;
+    MEALS.forEach(function(m){
+      plan.comidas[m] = limpiaEq(data.comidas[m] || {});
+      if(resumenEq(plan.comidas[m])) algo = true;
+    });
+    if(!algo) throw {code:"invalid_json"};
+    S.planLeido = plan;
+    pintaConfirmarPlan();
+  }).catch(function(e){
+    var code = (e && e.code) || "error_api";
+    if(code === "cancelled") return;
+    muestraError(code, true);
+  });
+}
+function pintaConfirmarPlan(){
+  var plan = S.planLeido;
+  var box = $("cp-body");
+  box.textContent = "";
+  MEALS.forEach(function(m){
+    var b = el("button","row");
+    b.type = "button";
+    var izq = el("div");
+    izq.appendChild(el("div","t", MEAL_LABEL[m]));
+    b.appendChild(izq);
+    b.appendChild(el("span","macros", resumenEq(plan.comidas[m]) || "sin porciones"));
+    b.addEventListener("click", function(){ corrige(m, b); });
+    box.appendChild(b);
+  });
+  ir("s-confirmar-plan");
+}
+function corrige(m, boton){
+  var plan = S.planLeido;
+  var txt = window.prompt(
+    "Porciones de "+MEAL_LABEL[m]+".\nEscríbelas así: 3 V, 1 F, 3 C, 3 P, 3 G\n"+
+    "V verdura, F fruta, C cereal, P proteína, G grasa, L lácteo, O oleaginosa.",
+    resumenEq(plan.comidas[m]));
+  if(txt === null) return;
+  var nuevo = vacio();
+  String(txt).split(/[,;\n]+/).forEach(function(parte){
+    var mm = parte.trim().match(/^([\d.]+)\s*([VFCPGLO])/i);
+    if(!mm) return;
+    var n = Number(mm[1]);
+    var letra = mm[2].toUpperCase();
+    GK.forEach(function(g){ if(GS[g] === letra && isFinite(n)) nuevo[g] = Math.round(n*2)/2; });
+  });
+  plan.comidas[m] = nuevo;
+  boton.lastChild.textContent = resumenEq(nuevo) || "sin porciones";
+}
+
+/* ======================================================================
+   12. Conexión y respaldo
+   ====================================================================== */
+function pintaConexion(){
+  $("cx-url").value = store.cache.api != null ? store.cache.api : API_POR_DEFECTO;
+  $("cx-clave").value = store.clave();
+  $("cx-msg").textContent = "";
+  ir("s-conexion");
+}
+function probarConexion(){
+  store.cache.api = ($("cx-url").value || "").trim();
+  store.cache.clave = ($("cx-clave").value || "").trim();
+  store.guardar();
+  var msg = $("cx-msg");
+  msg.textContent = "";
+  msg.appendChild(el("p","tiny","Probando…"));
+  pedirModelo('Responde solo con este JSON: {"ok":true}', null, null).then(function(){
+    msg.textContent = "";
+    var n = el("div","note");
+    n.innerHTML = svg(ICON.check, 2.2);
+    n.appendChild(el("p", null, "Listo. El servidor responde y la clave es correcta."));
+    msg.appendChild(n);
+  }).catch(function(e){
+    msg.textContent = "";
+    var t = ERRORES[(e && e.code) || "error_api"] || ERRORES.error_api;
+    msg.appendChild(el("div","err", t[0]+". "+t[1]));
+  });
+}
+function pintaRespaldo(){
+  var n = store.cache.registros.length;
+  $("resp-msg").textContent = "";
+  $("resp-msg").appendChild(el("p","tiny",
+    n+(n === 1 ? " comida guardada" : " comidas guardadas")+" y "+
+    store.cache.planes.length+(store.cache.planes.length === 1 ? " plan." : " planes.")));
+  ir("s-respaldo");
+}
+function bajarRespaldo(){
+  var datos = {
+    version:3, fecha:new Date().toISOString(),
+    planes:store.cache.planes, registros:store.cache.registros, activo:store.cache.activo
+  };
+  var blob = new Blob([JSON.stringify(datos, null, 2)], {type:"application/json"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "plato-justo-"+new Date().toISOString().slice(0,10)+".json";
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+}
+function restaurar(file){
+  var fr = new FileReader();
+  fr.onload = function(){
+    try{
+      var v = JSON.parse(String(fr.result));
+      if(!v || !Array.isArray(v.planes) || !Array.isArray(v.registros)) throw 0;
+      store.cache.planes = v.planes;
+      store.cache.registros = v.registros;
+      store.cache.activo = v.activo || (v.planes[0] && v.planes[0].id);
+      store.guardar();
+      pintaRespaldo();
+      $("resp-msg").appendChild(el("p","tiny","Respaldo restaurado."));
+    }catch(e){
+      $("resp-msg").textContent = "";
+      $("resp-msg").appendChild(el("div","err","Ese archivo no es un respaldo de Plato Justo."));
+    }
+  };
+  fr.readAsText(file);
+}
+
+/* ======================================================================
+   13. Errores
+   ====================================================================== */
+var ERRORES = {
+  sin_conexion:["Sin conexión","No alcancé tu servidor. Revisa el internet del celular y vuelve a intentar."],
+  sin_servidor:["No encontré tu servidor","La dirección de la función no responde. Revísala en Conexión, dentro de Tu cuenta."],
+  clave_incorrecta:["La clave no coincide","La clave de la app no es la que configuraste en el servidor. Cámbiala en Conexión."],
+  sin_llave:["Falta la llave en el servidor","Configura GEMINI_API_KEY en las variables de tu función y vuelve a desplegar."],
+  llave_invalida:["La llave no sirve","Genera una nueva en Google AI Studio y actualiza la variable del servidor."],
+  limite_diario:["Se acabó el límite gratis de hoy","El plan gratuito de Google tiene un tope diario. Vuelve a intentar mañana, o escribe el platillo a mano."],
+  modelo_desconocido:["Ese modelo no existe o no está en tu plan","Cambia la variable MODELO del servidor a gemini-3.5-flash."],
+  ocupado:["El modelo está saturado","Espera un minuto y vuelve a intentar."],
+  refused:["No pude analizar esa foto","Prueba con otra imagen del menú."],
+  sin_respuesta:["No llegó respuesta","Fotografía menos platillos e intenta de nuevo."],
+  rate_limited:["Demasiadas consultas seguidas","Espera un minuto y vuelve a intentar."],
+  image_rejected:["No pude usar esa foto","Toma otra, más ligera o en JPG."],
+  invalid_json:["No alcancé a leer el menú","Suele pasar con reflejos, poca luz o letra muy chica. Acércate y vuelve a intentar."],
+  error_api:["Algo falló en el análisis","Intenta de nuevo en un momento."]
+};
+function muestraError(code, esPlan){
+  var e = ERRORES[code] || ERRORES.error_api;
+  $("err-titulo").textContent = e[0];
+  $("err-texto").textContent = e[1];
+  $("err-reintentar").textContent = esPlan ? "Tomar otra foto del plan" : "Tomar otra foto";
+  $("err-escribir").hidden = !!esPlan;
+  $("err-conexion").hidden = !(code === "sin_servidor" || code === "clave_incorrecta" ||
+                               code === "sin_llave" || code === "llave_invalida" ||
+                               code === "modelo_desconocido" || code === "sin_conexion");
+  $("err-reintentar").onclick = function(){
+    if(esPlan){ ir("s-subir"); try{ $("file-plan").click(); }catch(x){} }
+    else { ir("s-captura"); try{ $("file-menu").click(); }catch(x){} }
+  };
+  ir("s-error");
+}
+function pintaEscribir(){
+  var t = objetivo(S.meal);
+  var chips = $("esc-chips");
+  chips.textContent = "";
+  GK.filter(function(g){ return t[g] > 0; }).forEach(function(g){
+    chips.appendChild(el("span","chip", t[g]+" "+GN[g].toLowerCase()));
+  });
+  ir("s-escribir");
+}
+
+/* ======================================================================
+   14. Arranque
+   ====================================================================== */
+document.addEventListener("click", function(ev){
+  var b = ev.target.closest && ev.target.closest("[data-back]");
+  if(b) atras();
+});
+$("go-cuenta").addEventListener("click", pintaCuenta);
+$("go-escribir").addEventListener("click", pintaEscribir);
+$("err-escribir").addEventListener("click", pintaEscribir);
+$("err-conexion").addEventListener("click", pintaConexion);
+$("disparar").addEventListener("click", function(){ $("file-menu").click(); });
+$("file-menu").addEventListener("change", function(){
+  var f = this.files && this.files[0];
+  this.value = "";
+  if(!f) return;
+  S.foto = f;
+  var img = $("cap-prev");
+  img.src = URL.createObjectURL(f);
+  img.hidden = false;
+  $("analizar").hidden = false;
+});
+$("analizar").addEventListener("click", function(){ analizaMenu(null); });
+$("calcular").addEventListener("click", function(){
+  var t = ($("txt-platillo").value || "").trim();
+  if(!t){ $("txt-platillo").focus(); return; }
+  S.foto = null;
+  analizaMenu(t);
+});
+$("cancelar").addEventListener("click", function(){ if(ctl) ctl.abort(); atras(); });
+$("ver-menu").addEventListener("click", function(){
+  if(S.platillos.length > 1) pintaMenu(); else pintaDetalle();
+});
+$("pedi-esto").addEventListener("click", pintaConfirmar);
+$("pedi-detalle").addEventListener("click", pintaConfirmar);
+$("registrar").addEventListener("click", function(){ registrar(false); });
+$("registrar-libre").addEventListener("click", function(){ registrar(true); });
+$("libre-ver").addEventListener("click", pintaMenu);
+$("listo-inicio").addEventListener("click", inicio);
+$("listo-historial").addEventListener("click", function(){ pila = ["s-inicio"]; pintaHistorial(); });
+$("go-subir").addEventListener("click", function(){
+  S.fotoPlan = null;
+  $("plan-prev").hidden = true;
+  $("leer-plan").hidden = true;
+  ir("s-subir");
+});
+$("drop-plan").addEventListener("click", function(){ $("file-plan").click(); });
+$("file-plan").addEventListener("change", function(){
+  var f = this.files && this.files[0];
+  this.value = "";
+  if(!f) return;
+  S.fotoPlan = f;
+  var img = $("plan-prev");
+  img.src = URL.createObjectURL(f);
+  img.hidden = false;
+  $("leer-plan").hidden = false;
+});
+$("leer-plan").addEventListener("click", leePlan);
+$("guardar-plan").addEventListener("click", function(){
+  store.guardarPlan(S.planLeido, true);
+  pila = [];
+  pintaCuenta();
+});
+$("cancelar-plan").addEventListener("click", function(){ pila = []; pintaCuenta(); });
+$("cx-probar").addEventListener("click", probarConexion);
+$("resp-bajar").addEventListener("click", bajarRespaldo);
+$("resp-subir").addEventListener("click", function(){ $("file-resp").click(); });
+$("file-resp").addEventListener("change", function(){
+  var f = this.files && this.files[0];
+  this.value = "";
+  if(f) restaurar(f);
+});
+
+store.cargar();
+pintaInicio();
+setInterval(function(){ if(!$("s-inicio").hidden) pintaInicio(); }, 30000);
+})();
+</script>
+</body>
+</html>

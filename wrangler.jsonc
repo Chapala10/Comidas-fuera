@@ -1,0 +1,17 @@
+{
+  // Nombre del proyecto. Aparece en la dirección: https://<name>.<tu-cuenta>.workers.dev
+  "name": "plato-justo",
+
+  // Fecha de compatibilidad: se deja como hoy, no hay que tocarla después.
+  "compatibility_date": "2026-09-21",
+
+  // El código que atiende /api/analizar.
+  "main": "src/index.js",
+
+  // Los archivos del sitio (index.html, manifest, iconos). Cloudflare los
+  // sirve directo, sin pasar por src/index.js, para todo lo que sí exista
+  // ahí adentro.
+  "assets": {
+    "directory": "./public/"
+  }
+}
