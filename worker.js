@@ -95,6 +95,7 @@ export async function manejar(request, env) {
           maxOutputTokens: MAX_TOKENS,
           // Gemini devuelve JSON puro, sin ```json alrededor.
           responseMimeType: "application/json"
+          thinkingConfig: { thinkingBudget: 0 }
         }
       })
     });
